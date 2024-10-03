@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_03_091103) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_03_184003) do
   create_table "customers", force: :cascade do |t|
     t.string "name"
     t.string "email", null: false
@@ -19,4 +19,34 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_03_091103) do
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_customers_on_email", unique: true
   end
+
+  create_table "expenditures", force: :cascade do |t|
+    t.integer "ie_statement_id", null: false
+    t.string "category"
+    t.integer "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ie_statement_id"], name: "index_expenditures_on_ie_statement_id"
+  end
+
+  create_table "ie_statements", force: :cascade do |t|
+    t.string "name"
+    t.integer "customer_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_ie_statements_on_customer_id"
+  end
+
+  create_table "incomes", force: :cascade do |t|
+    t.integer "ie_statement_id", null: false
+    t.string "category"
+    t.integer "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ie_statement_id"], name: "index_incomes_on_ie_statement_id"
+  end
+
+  add_foreign_key "expenditures", "ie_statements"
+  add_foreign_key "ie_statements", "customers"
+  add_foreign_key "incomes", "ie_statements"
 end
