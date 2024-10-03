@@ -3,9 +3,7 @@ source "https://rubygems.org"
 gem "rails", "~> 7.2.1"
 gem "sqlite3", ">= 1.4"
 gem "puma", ">= 5.0"
-# Build JSON APIs with ease [https://github.com/rails/jbuilder]
-# gem "jbuilder"
-
+gem "jbuilder"
 gem "bcrypt"
 gem "jwt"
 
@@ -16,17 +14,15 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "bootsnap", require: false
 
 group :development do
-  gem 'annotate'
-  gem 'web-console'
+  gem "annotate"
+  gem "web-console"
 end
 
 group :development, :test do
-  gem 'rspec-rails'
-  gem 'factory_bot_rails'
-  gem 'faker'
-  gem 'pry-byebug'
+  gem "rspec-rails"
+  gem "factory_bot_rails"
+  gem "faker"
+  gem "pry-byebug"
   gem "brakeman", require: false
   gem "rubocop-rails-omakase", require: false
 end
-
-

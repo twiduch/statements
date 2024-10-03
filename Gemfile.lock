@@ -108,6 +108,9 @@ GEM
     irb (1.14.1)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
+    jbuilder (2.13.0)
+      actionview (>= 5.0.0)
+      activesupport (>= 5.0.0)
     json (2.7.2)
     jwt (2.9.3)
       base64
@@ -305,6 +308,7 @@ DEPENDENCIES
   brakeman
   factory_bot_rails
   faker
+  jbuilder
   jwt
   pry-byebug
   puma (>= 5.0)
