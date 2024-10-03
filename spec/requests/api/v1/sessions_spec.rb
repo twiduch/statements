@@ -34,7 +34,7 @@ RSpec.describe Api::V1::SessionsController, type: :request do
 
       it 'returns an error message and unauthorized status' do
         expect(response).to have_http_status(:unauthorized)
-        expect(JSON.parse(response.body)['error']).to eq('Invalid email or password')
+        expect(JSON.parse(response.body)['messages']).to eq(['Invalid email or password'])
       end
     end
 
@@ -43,7 +43,7 @@ RSpec.describe Api::V1::SessionsController, type: :request do
 
       it 'returns an error message and unauthorized status' do
         expect(response).to have_http_status(:unauthorized)
-        expect(JSON.parse(response.body)['error']).to eq('Invalid email or password')
+        expect(JSON.parse(response.body)['messages']).to eq(['Invalid email or password'])
       end
     end
   end

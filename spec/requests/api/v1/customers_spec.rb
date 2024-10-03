@@ -25,14 +25,7 @@ RSpec.describe Api::V1::CustomersController, type: :request do
     end
 
     context 'when not authenticated' do
-      it 'returns an unauthorized status' do
-        expect(response).to have_http_status(:unauthorized)
-      end
-
-      it 'renders unauthorized message' do
-        json_response = JSON.parse(response.body)
-        expect(json_response['message']).to eq('Unauthorized')  # Assuming this is the error message returned
-      end
+      it_behaves_like 'an unauthorized request'
     end
   end
 end

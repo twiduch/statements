@@ -26,8 +26,8 @@ RSpec.describe IeStatement, type: :model do
     context 'with incomes and expenditures' do
       subject(:statement) do
         build(:ie_statement, name: 'Monthly Budget', customer: customer,
-          incomes_attributes: [{ category: 'Salary', amount: 300_000 }],
-          expenditures_attributes: [{ category: 'Rent', amount: 100_000 }]
+          incomes_attributes: [ { category: 'Salary', amount: 300_000 } ],
+          expenditures_attributes: [ { category: 'Rent', amount: 100_000 } ]
         )
       end
 

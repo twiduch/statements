@@ -8,7 +8,7 @@ module Api
           token = Jwt.encode(customer_id: customer.id)
           render locals: { customer: customer, token: token }, status: :ok
         else
-          render json: { error: "Invalid email or password" }, status: :unauthorized
+          render json: { status: "error", messages: [ "Invalid email or password" ] }, status: :unauthorized
         end
       end
     end
