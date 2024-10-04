@@ -22,7 +22,10 @@ RSpec.describe Api::V1::IncomesController, type: :request do
       }
     end
 
+    let(:expenditure) { create(:expenditure, amount: 100000) }
+
     before do
+      ie_statement.expenditures << expenditure
       post "/api/v1/ie_statements/#{ie_statement.id}/incomes", params:, headers: headers, as: :json
     end
 
@@ -45,6 +48,18 @@ RSpec.describe Api::V1::IncomesController, type: :request do
           body = JSON.parse(response.body)
           expect(body['category']).to eq('Salary')
           expect(body['amount']).to eq(300000)
+        end
+
+        it 'updates ie_statement disposable_income' do
+          expect(ie_statement.reload.disposable_income).to eq(200000)
+          post "/api/v1/ie_statements/#{ie_statement.id}/incomes", params:, headers: headers, as: :json
+          expect(ie_statement.reload.disposable_income).to eq(500000)
+        end
+
+        it 'updates ie_statement rating' do
+          expect(ie_statement.reload.rating).to eq('C')
+          post "/api/v1/ie_statements/#{ie_statement.id}/incomes", params:, headers: headers, as: :json
+          expect(ie_statement.reload.rating).to eq('B')
         end
 
         context 'when not own statement' do
@@ -84,7 +99,7 @@ RSpec.describe Api::V1::IncomesController, type: :request do
 
   describe 'GET /api/v1/incomes/:id' do
     let(:income) { create(:income) }
-    let!(:ie_statement) { create(:ie_statement, customer:, incomes: [income]) }
+    let!(:ie_statement) { create(:ie_statement, customer:, incomes: [ income ]) }
 
     before do
       get "/api/v1/incomes/#{income.id}", headers: headers
@@ -98,7 +113,7 @@ RSpec.describe Api::V1::IncomesController, type: :request do
           expect(response).to have_http_status(:ok)
         end
 
-        it 'renders the correct ie_statement' do
+        it 'renders the correct income' do
           body = JSON.parse(response.body)
           expect(body['id']).to eq(income.id)
           expect(body['amount']).to eq(income.amount)
@@ -107,7 +122,7 @@ RSpec.describe Api::V1::IncomesController, type: :request do
 
       context 'when income for different user' do
         let(:customer2) { create(:customer) }
-        let!(:ie_statement) { create(:ie_statement, customer: customer2, incomes: [income]) }
+        let!(:ie_statement) { create(:ie_statement, customer: customer2, incomes: [ income ]) }
 
         it 'returns status :not_found' do
           expect(response).to have_http_status(:not_found)

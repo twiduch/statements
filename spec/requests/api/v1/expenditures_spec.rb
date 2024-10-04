@@ -22,7 +22,10 @@ RSpec.describe Api::V1::ExpendituresController, type: :request do
       }
     end
 
+    let(:income) { create(:income, amount: 810000) }
+
     before do
+      ie_statement.incomes << income
       post "/api/v1/ie_statements/#{ie_statement.id}/expenditures", params:, headers: headers, as: :json
     end
 
@@ -45,6 +48,18 @@ RSpec.describe Api::V1::ExpendituresController, type: :request do
           body = JSON.parse(response.body)
           expect(body['category']).to eq('Mortage')
           expect(body['amount']).to eq(80000)
+        end
+
+        it 'updates ie_statement disposable_income' do
+          expect(ie_statement.reload.disposable_income).to eq(730000)
+          post "/api/v1/ie_statements/#{ie_statement.id}/expenditures", params:, headers: headers, as: :json
+          expect(ie_statement.reload.disposable_income).to eq(650000)
+        end
+
+        it 'updates ie_statement rating' do
+          expect(ie_statement.reload.rating).to eq('A')
+          post "/api/v1/ie_statements/#{ie_statement.id}/expenditures", params:, headers: headers, as: :json
+          expect(ie_statement.reload.rating).to eq('B')
         end
 
         context 'when not own statement' do
@@ -84,7 +99,7 @@ RSpec.describe Api::V1::ExpendituresController, type: :request do
 
   describe 'GET /api/v1/expenditures/:id' do
     let(:expenditure) { create(:expenditure) }
-    let!(:ie_statement) { create(:ie_statement, customer:, expenditures: [expenditure]) }
+    let!(:ie_statement) { create(:ie_statement, customer:, expenditures: [ expenditure ]) }
 
     before do
       get "/api/v1/expenditures/#{expenditure.id}", headers: headers
@@ -107,7 +122,7 @@ RSpec.describe Api::V1::ExpendituresController, type: :request do
 
       context 'when expenditure for different user' do
         let(:customer2) { create(:customer) }
-        let!(:ie_statement) { create(:ie_statement, customer: customer2, expenditures: [expenditure]) }
+        let!(:ie_statement) { create(:ie_statement, customer: customer2, expenditures: [ expenditure ]) }
 
         it 'returns status :not_found' do
           expect(response).to have_http_status(:not_found)

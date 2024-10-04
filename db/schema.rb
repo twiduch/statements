@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_03_184003) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_04_115047) do
   create_table "customers", force: :cascade do |t|
     t.string "name"
     t.string "email", null: false
@@ -34,6 +34,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_03_184003) do
     t.integer "customer_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "rating"
+    t.integer "disposable_income"
     t.index ["customer_id"], name: "index_ie_statements_on_customer_id"
   end
 

@@ -9,11 +9,13 @@ end
 #
 # Table name: ie_statements
 #
-#  id          :integer          not null, primary key
-#  name        :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  customer_id :integer          not null
+#  id                :integer          not null, primary key
+#  disposable_income :integer
+#  name              :string
+#  rating            :string
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  customer_id       :integer          not null
 #
 # Indexes
 #

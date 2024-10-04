@@ -4,7 +4,6 @@ module Api
       def show
         @expenditure = Expenditure.find(params[:id])
         raise(ActiveRecord::RecordNotFound) unless @expenditure.customer == current_user
-
       end
 
       def create

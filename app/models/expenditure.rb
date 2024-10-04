@@ -1,5 +1,5 @@
 class Expenditure < ApplicationRecord
-  belongs_to :ie_statement
+  belongs_to :ie_statement, touch: true
   has_one :customer, through: :ie_statement
 
   validates :category, presence: true

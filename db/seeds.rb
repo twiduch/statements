@@ -1,4 +1,6 @@
-customer = Customer.create(name: 'Luke', email: 'customer1@example.com', password: 'password123')
+customer = Customer.create(name: 'Luke', email: 'luke@example.com', password: 'password123')
+Customer.create(name: 'Mary', email: 'mary@example.com', password: 'password123')
+
 statement = IeStatement.create(name: 'Statement1', customer:)
 
 statement.incomes.create([ { category: 'Salary', amount: 280000 },

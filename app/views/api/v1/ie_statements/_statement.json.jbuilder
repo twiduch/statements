@@ -1,4 +1,4 @@
-json.extract! @ie_statement, :id, :name, :created_at, :updated_at
+json.extract! @ie_statement, :id, :name, :disposable_income, :rating, :created_at, :updated_at
 
 json.customer do
   json.id @ie_statement.customer.id

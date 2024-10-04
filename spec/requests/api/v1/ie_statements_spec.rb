@@ -49,6 +49,16 @@ RSpec.describe Api::V1::IeStatementsController, type: :request do
           expect(body['expenditures'].first['category']).to eq('Rent')
         end
 
+        it 'calculates rating' do
+          body = JSON.parse(response.body)
+          expect(body['rating']).to eq('C')
+        end
+
+        it 'calculates disposable_income' do
+          body = JSON.parse(response.body)
+          expect(body['disposable_income']).to eq(185000)
+        end
+
         context 'when trying to create ie_statement for different user' do
           let(:customer2) { create(:customer) }
 
@@ -88,7 +98,7 @@ RSpec.describe Api::V1::IeStatementsController, type: :request do
 
   describe 'GET /api/v1/ie_statements/:id' do
     let(:income) { create(:income) }
-    let(:ie_statement) { create(:ie_statement, customer:, incomes: [income]) }
+    let(:ie_statement) { create(:ie_statement, customer:, incomes: [ income ]) }
 
     before do
       get "/api/v1/ie_statements/#{ie_statement.id}", headers: headers
