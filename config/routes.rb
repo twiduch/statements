@@ -8,7 +8,10 @@ Rails.application.routes.draw do
         resources :ie_statements, only: [ :create ]
       end
 
-      resources :ie_statements, only: [] do
+      resources :incomes, only: [ :show ]
+      resources :expenditures, only: [ :show ]
+
+      resources :ie_statements, only: [ :index, :show ] do
         resources :incomes, only: [ :create ]
         resources :expenditures, only: [ :create ]
       end

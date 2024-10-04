@@ -5,6 +5,6 @@ RSpec.shared_examples 'an unauthorized request' do
 
   it 'renders unauthorized message' do
     json_response = JSON.parse(response.body)
-    expect(json_response['messages']).to eq(['Unauthorized'])
+    expect(json_response['messages']).to eq([ 'Unauthorized' ])
   end
 end

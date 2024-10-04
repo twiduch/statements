@@ -1,24 +1,33 @@
-# README
+### Versions
+Ruby 3.3.5
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Rails 7.2.1
 
-Things you may want to cover:
+### Preparation
+The application uses sqlite for demonstration purposes.
 
-* Ruby version
+1. **Seed database**
 
-* System dependencies
+   Run
+   ```sh
+   rails db:setup
+   ```
 
-* Configuration
+### Tests & Console
+Tests can be run by
+```sh
+rspec spec
+```
 
-* Database creation
+For console access type
+```sh
+rails c
+```
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+### Running server
+Start server by
+```sh
+rails s
+```
+After initialization the app will be available at port 3000.
+The app is API only app consuming and distributing data in json format.

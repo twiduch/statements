@@ -1,5 +1,6 @@
 class Income < ApplicationRecord
   belongs_to :ie_statement
+  has_one :customer, through: :ie_statement
 
   validates :category, presence: true
   validates :amount, presence: true, numericality: { greater_than: 0 }

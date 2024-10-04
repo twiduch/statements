@@ -18,8 +18,4 @@ class Api::ApiController < ApplicationController
   def current_user
     @current_user
   end
-
-  def render_json_error(msgs, status)
-    render json: { status: "error", messages: msgs }, status:
-  end
 end
