@@ -41,7 +41,7 @@ To interact with the app, you must first obtain an authentication token. Follow 
 
 ```json
 {
-    "email": "customer1@example.com",
+    "email": "luke@example.com",
     "password": "password123"
 }
 ```
@@ -67,19 +67,6 @@ The body of POST requests needs to be of type json:
 
 All monetary values are stored and presented as fractional values (in cents), e.g. 100.00 is stored as 10000.
 
-### Customer
-#### GET /api/v1/customers/current
-Returning information about current customer
-
-Response example:
-```json
-{
-    "id": 2,
-    "name": "Mary",
-    "email": "mary@example.com",
-}
-```
-
 ### Session
 #### POST /api/v1/login
 Returning authentication token
@@ -99,36 +86,47 @@ Response example:
 }
 ```
 
+### Customer
+#### GET /api/v1/customers/current
+Returning information about current customer
+
+Response example:
+```json
+{
+    "id": 2,
+    "name": "Mary",
+    "email": "mary@example.com",
+}
+```
+
 ### IE Statements
 #### GET /api/v1/ie_statements
-Returns IE Statements for logged in customer
+Returns IE Statements for logged customer
 
 Response example:
 ```json
 [
     {
         "id": 1,
-        "name": "Statement1",
-        "created_at": "2024-10-04 11:14:49"
+        "name": "Statement1"
     },
     {
         "id": 2,
-        "name": "Budget23",
-        "created_at": "2024-10-04 11:25:44"
+        "name": "Budget23"
     }
 ]
 ```
 
 #### GET /api/v1/ie_statements/:id
-Returns pecific IE Statements for a customer
+Returns IE Statement for logged customer
 
 Response example:
 ```json
 {
     "id": 2,
     "name": "Budget23",
-    "created_at": "2024-10-04T11:25:44.856Z",
-    "updated_at": "2024-10-04T11:25:44.856Z",
+    "disposable_income": 395000,
+    "rating": "B",
     "customer": {
         "id": 1
     },
@@ -137,6 +135,16 @@ Response example:
             "id": 3,
             "category": "Salary",
             "amount": 300000
+        },
+        {
+            "id": 8,
+            "category": "New income",
+            "amount": 200000
+        },
+        {
+            "id": 9,
+            "category": "Next",
+            "amount": 10000
         }
     ],
     "expenditures": [
@@ -155,8 +163,9 @@ Response example:
 ```
 
 #### POST /api/v1/customers/:customer_id/ie_statements
-Creates new statement for `customer_id`. You can only create statements for your logged in `id`. 
-The reason for this route is to allow in the future to create statements for different customers by admins or internal staff.
+Creates new statement for `customer_id`.
+Currently, users can only create statements for themselves. This restriction ensures that customers can only manage their own data. 
+However, this route has been designed to accommodate future functionality where admins or internal staff may create statements on behalf of other customers.
 
 You can create statement alone and add incomes and expenditures later:
 ```json
@@ -172,7 +181,7 @@ or create statement with incomes and expenditures in a one step:
 ```json
 {
     "ie_statement": {
-        "name": "Budget 9",
+        "name": "Statement",
         "incomes_attributes": [
             {
                 "category": "Salary",
@@ -186,7 +195,7 @@ or create statement with incomes and expenditures in a one step:
             },
             {
                 "category": "Travel",
-                "amount": "15000"
+                "amount": 45000
             }
         ]
     }
@@ -196,31 +205,104 @@ or create statement with incomes and expenditures in a one step:
 Response example:
 ```json
 {
-    "id": 6,
+    "id": 15,
     "name": "Statement",
-    "created_at": "2024-10-04T11:41:48.712Z",
-    "updated_at": "2024-10-04T11:41:48.712Z",
+    "disposable_income": 155000,
+    "rating": "C",
     "customer": {
-        "id": 2
+        "id": 1
     },
     "incomes": [
         {
-            "id": 5,
+            "id": 19,
             "category": "Salary",
             "amount": 300000
         }
     ],
     "expenditures": [
         {
-            "id": 8,
+            "id": 23,
             "category": "Rent",
             "amount": 100000
         },
         {
-            "id": 9,
+            "id": 24,
             "category": "Travel",
-            "amount": 15000
+            "amount": 45000
         }
     ]
 }
 ```
+
+### Incomes
+#### GET /api/v1/incomes/:id
+Returns Income for logged customer
+
+Response example:
+```json
+{
+    "id": 2,
+    "category": "Other",
+    "amount": 30000
+}
+```
+
+#### POST /api/v1/ie_statements/:ie_statement_id/incomes
+Creates an income entry for an IE Statement. Customers are only permitted to add income to statements that belong to them.
+This initiates the recalculation of the IE Statement's aggregate values.
+
+Request example:
+```json
+{
+    "income": {
+        "category": "Remittance",
+        "amount": 1200000
+    }
+}
+```
+
+Response example:
+```json
+{
+    "id": 20,
+    "category": "Remittance",
+    "amount": 1200000,
+}
+```
+
+### Expenditures
+#### GET /api/v1/expenditures/:id
+Returns Expenditure for logged customer
+
+Response example:
+```json
+{
+    "id": 3,
+    "category": "Travel",
+    "amount": 15000
+}
+```
+
+#### POST /api/v1/ie_statements/:ie_statement_id/expenditures
+Creates an expenditure entry for an IE Statement. Customers are only permitted to add income to statements that belong to them.
+This initiates the recalculation of the IE Statement's aggregate values
+
+Request example:
+```json
+{
+    "expenditure": {
+        "category": "Expenditure",
+        "amount": 42000
+    }
+}
+```
+
+Response example:
+```json
+{
+    "id": 22,
+    "category": "Expenditure",
+    "amount": 42000
+}
+```
+
