@@ -306,3 +306,24 @@ Response example:
 }
 ```
 
+## Extending the App
+
+App can be extended adding features such as:
+
+1. Removing/Updating income/expenditure
+2. Making rating system more flexible with different bands
+3. Add support for different currencies
+4. Adding expenses and income categories
+5. Automatic notifications after statement update
+
+## App Refinements
+
+The app needs further refinement in various aspects to ensure readiness for production.
+Examples:
+
+- **Security:** Implement account creation. Role based authorization.
+- **Logging:** Add comprehensive logging for monitoring and debugging.
+- **Monitoring:** Integrate tools to track performance and health.
+- **Error Handling:** Improve handling and messaging for errors.
+
+This initial version serves as a foundation for what can be further developed and polished.
